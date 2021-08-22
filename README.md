@@ -7,6 +7,7 @@ Git<br>
 Jpa<br>
 Hibernate<br>
 Angular 10<br>
+Java 11<br>
 
 <h1>Funcionalidades</h1>
 Cadastro de produtos<br>
