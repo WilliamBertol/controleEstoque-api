@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.controleestoque.dtos.ProdutoDTO;
@@ -41,6 +42,11 @@ public class ProdutoService {
 
 	public void deletarProduto(Long idProduto) {
 		Produto produto = findById(idProduto);
-		produtoRepository.delete(produto);
+		
+		try {
+			produtoRepository.delete(produto);
+		} catch (DataIntegrityViolationException e) {
+			throw new com.controleestoque.resources.exceptions.DataIntegrityViolationException("Produto não pode ser deletado!");
+		}
 	}
 }

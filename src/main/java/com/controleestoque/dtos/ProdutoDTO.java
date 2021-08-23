@@ -2,6 +2,11 @@ package com.controleestoque.dtos;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 import com.controleestoque.entity.Produto;
 
 public class ProdutoDTO implements Serializable {
@@ -10,8 +15,11 @@ public class ProdutoDTO implements Serializable {
 
 	private Long idProduto;
 	
+	@NotNull(message = "O campo código não deve ser nulo")
 	private Long codigo;
 	
+	@NotEmpty(message = "Campo Descrição é requerido!")
+	@Length(min = 1, max = 300, message = "O campo Descrição deve ter entre 1 e 300 caracteres!")
 	private String descricao;
 
 	public ProdutoDTO(Produto produto) {

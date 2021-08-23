@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -44,7 +46,7 @@ public class ProdutoResource {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Produto> gravarProduto(@RequestBody Produto produto) {
+	public ResponseEntity<Produto> gravarProduto(@RequestBody @Valid Produto produto) {
 		Produto produtoRetorno = produtoService.gravarProduto(produto);
 		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{idProduto").buildAndExpand(produtoRetorno.getIdProduto()).toUri();
@@ -52,7 +54,7 @@ public class ProdutoResource {
 	}
 	
 	@PutMapping(value = "/{idProduto}")
-	public ResponseEntity<ProdutoDTO> alterarProduto(@PathVariable Long idProduto, @RequestBody ProdutoDTO produto) {
+	public ResponseEntity<ProdutoDTO> alterarProduto(@PathVariable Long idProduto, @Valid @RequestBody ProdutoDTO produto) {
 		Produto produtoRetorno = produtoService.alterarProduto(idProduto, produto);
 		return ResponseEntity.ok().body(new ProdutoDTO(produtoRetorno));
 	}
