@@ -1,12 +1,12 @@
 package com.controleestoque.resources;
 
 import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -37,12 +38,11 @@ public class ProdutoResource {
 		return ResponseEntity.ok().body(produto);
 	}
 	
-	@GetMapping
-	public ResponseEntity<List<ProdutoDTO>> buscarProdutosPaginados() {
-		List<Produto> produtos = produtoService.buscarProdutos();
-		List<ProdutoDTO> produtoDTOs = produtos.stream().map(produto -> new ProdutoDTO(produto)).collect(Collectors.toList());
+	@GetMapping(value = "/paged")
+	public ResponseEntity<Page<Produto>> buscarProdutosPaginados(Pageable pageable, @RequestParam("filtro") String filtro) {
+		Page<Produto> produtosPaged = produtoService.buscarProdutosPaginado(pageable, filtro);
 		
-		return ResponseEntity.ok().body(produtoDTOs);
+		return ResponseEntity.ok().body(produtosPaged);
 	}
 	
 	@PostMapping
